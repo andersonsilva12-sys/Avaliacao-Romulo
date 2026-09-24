@@ -153,7 +153,6 @@ class ArrayContainer {
       ctx.setLineDash([4, 4]);
       ctx.strokeStyle = "#9ca3af";
       ctx.lineWidth = 1;
-      ctx.strokeRect(x, y, this.cellSize, this.cellSize);
       ctx.setLineDash([]);
  
       ctx.fillStyle = "#374151";
