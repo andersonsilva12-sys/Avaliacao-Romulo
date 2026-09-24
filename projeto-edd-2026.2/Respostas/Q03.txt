@@ -1,0 +1,9 @@
+Não. Do jeito que o array é preenchido hoje, os valores são inseridos no final, na ordem digitada pelo usuário, sem ordenação. Como 
+a busca binária exige um array ordenado, ela não pode ser aplicada corretamente diretamente nesse estado. Primeiro seria necessário ordenar 
+o array ou inserir cada novo valor na posição correta.
+
+Para um array com 10 elementos, o número máximo de comparações é 4 (log 2 10≈3.32, arredondado para cima). 
+Para um array com 1.000 elementos, o número máximo de comparações é 10 (log 2 1000≈9.97, arredondado para cima).
+
+Em contraste, a busca sequencial (ou linear) exigiria até 10 comparações para o array de 10 elementos e até 1.000 
+comparações para o array de 1.000 elementos, demonstrando a vantagem logarítmica da busca binária em dados ordenados. 

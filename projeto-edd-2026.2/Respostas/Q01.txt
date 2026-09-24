@@ -1,0 +1,14 @@
+
+No método draw() da classe ArrayContainer, os dois loops têm objetivos diferentes:
+Loop for tradicional: Que percorre todas as posições possíveis do array, do índice 0 até capacity - 1.
+
+Ele desenha:as células, mesmo quando estão vazias; 
+as bordas tracejadas;
+os índices de cada posição, como [0], [1], [2].
+Seu objetivo é representar visualmente a estrutura completa do array e sua capacidade.
+
+Loop forEach
+Percorre somente os elementos que realmente existem em this.items.
+Para cada objeto Square, chama seu método draw(ctx), responsável por desenhar o quadrado, seu valor, sua cor e sua borda.
+Seu objetivo é desenhar apenas os elementos atualmente armazenados no array.
+Em resumo: o for desenha a estrutura fixa do array; o forEach desenha os elementos ocupados dentro dessa estrutura.
