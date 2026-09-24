@@ -64,6 +64,7 @@ class ArrayContainer {
     this.cellSize = cellSize;
     this.padding = padding;
     this.items = [];
+    this.lastSearchComparisons = 0;
  
     this.width = capacity * (cellSize + padding) + padding;
     this.height = cellSize + padding * 2;
@@ -95,6 +96,43 @@ class ArrayContainer {
     this.items.forEach((item, index) => {
       const target = this.slotPosition(index);
       item.moveTo(target.x, target.y);
+    });
+  }
+
+  sequentialSearch(value) {
+    this.lastSearchComparisons = 0;
+
+    for (let index = 0; index < this.items.length; index++) {
+      this.lastSearchComparisons++;
+      if (this.items[index].value === value) return index;
+    }
+
+    return -1;
+  }
+
+  binarySearch(value) {
+    this.lastSearchComparisons = 0;
+    let low = 0;
+    let high = this.items.length - 1;
+
+    while (low <= high) {
+      const middle = Math.floor((low + high) / 2);
+      this.lastSearchComparisons++;
+
+      if (this.items[middle].value === value) return middle;
+      if (this.items[middle].value < value) {
+        low = middle + 1;
+      } else {
+        high = middle - 1;
+      }
+    }
+
+    return -1;
+  }
+
+  isSorted() {
+    return this.items.every((item, index) => {
+      return index === 0 || this.items[index - 1].value <= item.value;
     });
   }
  
@@ -191,6 +229,8 @@ class FormController {
     this.form.addEventListener("submit", (e) => this.handleSubmit(e));
     this.form.addEventListener("click", (e) => {
       if (e.target.id === "botao-ordenar") this.handleSort();
+      if (e.target.id === "botao-sequencial") this.handleSequentialSearch();
+      if (e.target.id === "botao-binaria") this.handleBinarySearch();
     });
   }
  
@@ -217,6 +257,43 @@ class FormController {
   handleSort() {
     this.app.array.sort();
     this.showMessage("Elementos ordenados em ordem crescente.");
+  }
+
+  getSearchValue() {
+    const value = Number(document.getElementById("input-busca").value);
+    if (document.getElementById("input-busca").value === "" || Number.isNaN(value)) {
+      this.showMessage("Informe um valor para buscar.");
+      return null;
+    }
+    return value;
+  }
+
+  showSearchResult(method, value, index) {
+    const comparisons = this.app.array.lastSearchComparisons;
+    const result = index === -1
+      ? `Valor ${value} não encontrado`
+      : `Valor ${value} encontrado no índice ${index}`;
+    this.showMessage(`${method}: ${result}. Comparações: ${comparisons}.`);
+  }
+
+  handleSequentialSearch() {
+    const value = this.getSearchValue();
+    if (value === null) return;
+
+    const index = this.app.array.sequentialSearch(value);
+    this.showSearchResult("Busca sequencial", value, index);
+  }
+
+  handleBinarySearch() {
+    const value = this.getSearchValue();
+    if (value === null) return;
+    if (!this.app.array.isSorted()) {
+      this.showMessage("Ordene o array antes de realizar a busca binária.");
+      return;
+    }
+
+    const index = this.app.array.binarySearch(value);
+    this.showSearchResult("Busca binária", value, index);
   }
  
   showMessage(text) {
